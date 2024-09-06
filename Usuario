@@ -1,0 +1,33 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Usuario {
+    private String nome;
+    private List<Playlist> playlists;
+
+    public Usuario(String nome) {
+        this.nome = nome;
+        this.playlists = new ArrayList<>();
+    }
+
+    public void criarPlaylist(String nome) {
+        playlists.add(new Playlist(nome));
+        System.out.println("Playlist criada: " + nome);
+    }
+
+    public void removerPlaylist(String nome) {
+        playlists.removeIf(playlist -> playlist.getNome().equals(nome));
+        System.out.println("Playlist removida: " + nome);
+    }
+
+    public void listarPlaylists() {
+        System.out.println("Playlists de " + nome + ":");
+        for (Playlist playlist : playlists) {
+            System.out.println("- " + playlist.getNome());
+        }
+    }
+
+    public List<Playlist> getPlaylists() {
+        return playlists;
+    }
+}
