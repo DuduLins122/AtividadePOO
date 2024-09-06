@@ -1,0 +1,144 @@
+import java.util.Scanner;
+
+public class SpotifyApp {
+    private Usuario usuario;
+
+    public SpotifyApp(Usuario usuario) {
+        this.usuario = usuario;
+        inicializarPlaylistTrap();
+    }
+
+    private void inicializarPlaylistTrap() {
+        Playlist trapPlaylist = new Playlist("TRAP");
+        trapPlaylist.adicionarMusica(new Musica("SICKO MODE", "Travis Scott", "ASTROWORLD", 312));
+        trapPlaylist.adicionarMusica(new Musica("Can't Say", "Travis Scott", "ASTROWORLD", 237));
+        trapPlaylist.adicionarMusica(new Musica("BUTTERFLY EFFECT", "Travis Scott", "ASTROWORLD", 213));
+        trapPlaylist.adicionarMusica(new Musica("Highest In The Room", "Travis Scott", "Single", 181));
+        trapPlaylist.adicionarMusica(new Musica("Out West", "Travis Scott", "JACKBOYS", 158));
+        trapPlaylist.adicionarMusica(new Musica("No Idea", "Don Toliver", "Heaven Or Hell", 210));
+        trapPlaylist.adicionarMusica(new Musica("After Party", "Don Toliver", "Heaven Or Hell", 159));
+        trapPlaylist.adicionarMusica(new Musica("Cardigan", "Don Toliver", "Heaven Or Hell", 184));
+        trapPlaylist.adicionarMusica(new Musica("Euphoria", "Don Toliver", "Heaven Or Hell", 248));
+        trapPlaylist.adicionarMusica(new Musica("Had Enough", "Don Toliver feat. Quavo & Offset", "Heaven Or Hell", 160));
+        
+        usuario.getPlaylists().add(trapPlaylist);
+    }
+
+    public void exibirMenu() {
+        Scanner scanner = new Scanner(System.in);
+        int opcao = -1;
+
+        while (opcao != 0) {
+            System.out.println("\n--- Menu do Spotify ---");
+            System.out.println("1. Criar nova playlist");
+            System.out.println("2. Listar playlists");
+            System.out.println("3. Adicionar música à playlist");
+            System.out.println("4. Remover música da playlist");
+            System.out.println("5. Tocar todas as músicas de uma playlist");
+            System.out.println("6. Exibir músicas de uma playlist");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+            opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            tratarOpcao(opcao, scanner);
+        }
+        scanner.close();
+    }
+
+    public void tratarOpcao(int opcao, Scanner scanner) {
+        switch (opcao) {
+            case 1:
+                System.out.print("Nome da nova playlist: ");
+                String nomePlaylist = scanner.nextLine();
+                usuario.criarPlaylist(nomePlaylist);
+                break;
+            case 2:
+                usuario.listarPlaylists();
+                break;
+            case 3:
+                adicionarMusica(scanner);
+                break;
+            case 4:
+                removerMusica(scanner);
+                break;
+            case 5:
+                tocarPlaylist(scanner);
+                break;
+            case 6:
+                exibirMusicas(scanner);
+                break;
+            case 0:
+                System.out.println("Saindo do Spotify...");
+                break;
+            default:
+                System.out.println("Opção inválida! Tente novamente.");
+        }
+    }
+
+    private void adicionarMusica(Scanner scanner) {
+        System.out.print("Nome da playlist: ");
+        String nomePlaylist = scanner.nextLine();
+        for (Playlist playlist : usuario.getPlaylists()) {
+            if (playlist.getNome().equals(nomePlaylist)) {
+                System.out.print("Título da música: ");
+                String titulo = scanner.nextLine();
+                System.out.print("Artista: ");
+                String artista = scanner.nextLine();
+                System.out.print("Álbum: ");
+                String album = scanner.nextLine();
+                System.out.print("Duração (em segundos): ");
+                int duracao = scanner.nextInt();
+                scanner.nextLine();
+                Musica musica = new Musica(titulo, artista, album, duracao);
+                playlist.adicionarMusica(musica);
+                return;
+            }
+        }
+        System.out.println("Playlist não encontrada.");
+    }
+
+    private void removerMusica(Scanner scanner) {
+        System.out.print("Nome da playlist: ");
+        String nomePlaylist = scanner.nextLine();
+        for (Playlist playlist : usuario.getPlaylists()) {
+            if (playlist.getNome().equals(nomePlaylist)) {
+                System.out.print("Título da música a ser removida: ");
+                String titulo = scanner.nextLine();
+                playlist.removerMusica(new Musica(titulo, "", "", 0));
+                return;
+            }
+        }
+        System.out.println("Playlist não encontrada.");
+    }
+
+    private void tocarPlaylist(Scanner scanner) {
+        System.out.print("Nome da playlist: ");
+        String nomePlaylist = scanner.nextLine();
+        for (Playlist playlist : usuario.getPlaylists()) {
+            if (playlist.getNome().equals(nomePlaylist)) {
+                playlist.tocarTodas();
+                return;
+            }
+        }
+        System.out.println("Playlist não encontrada.");
+    }
+
+    private void exibirMusicas(Scanner scanner) {
+        System.out.print("Nome da playlist: ");
+        String nomePlaylist = scanner.nextLine();
+        for (Playlist playlist : usuario.getPlaylists()) {
+            if (playlist.getNome().equals(nomePlaylist)) {
+                playlist.exibirPlaylist();
+                return;
+            }
+        }
+        System.out.println("Playlist não encontrada.");
+    }
+
+    public static void main(String[] args) {
+        Usuario usuario = new Usuario("Usuario1");
+        SpotifyApp app = new SpotifyApp(usuario);
+        app.exibirMenu();
+    }
+}
