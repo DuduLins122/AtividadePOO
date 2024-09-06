@@ -1,0 +1,40 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Playlist {
+    private String nome;
+    private List<Musica> listaMusicas;
+
+    public Playlist(String nome) {
+        this.nome = nome;
+        this.listaMusicas = new ArrayList<>();
+    }
+
+    public void adicionarMusica(Musica musica) {
+        listaMusicas.add(musica);
+        System.out.println("Música adicionada à playlist: " + musica.getTitulo());
+    }
+
+    public void removerMusica(Musica musica) {
+        listaMusicas.remove(musica);
+        System.out.println("Música removida da playlist: " + musica.getTitulo());
+    }
+
+    public void tocarTodas() {
+        System.out.println("Tocando todas as músicas da playlist: " + nome);
+        for (Musica musica : listaMusicas) {
+            musica.tocar();
+        }
+    }
+
+    public void exibirPlaylist() {
+        System.out.println("Playlist: " + nome);
+        for (Musica musica : listaMusicas) {
+            musica.exibirInfo();
+        }
+    }
+
+    public String getNome() {
+        return nome;
+    }
+}
